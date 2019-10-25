@@ -1,15 +1,15 @@
-package lab1;
+package lab1.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class Ticket {
     private LocalDate date;
-    private Float ticketPrice;
+    private Integer ticketPrice;
 
-    public Ticket(LocalDate date,Float ticketPrice){
-     this.date=date;
-     this.ticketPrice=ticketPrice;
+    public Ticket(LocalDate date, Integer ticketPrice){
+        this.date=date;
+        this.ticketPrice=ticketPrice;
     }
 
     public LocalDate getDate() {
@@ -20,11 +20,11 @@ public class Ticket {
         this.date = date;
     }
 
-    public Float getTicketPrice() {
+    public Integer getTicketPrice() {
         return ticketPrice;
     }
 
-    public void setTicketPrice(Float ticketPrice) {
+    public void setTicketPrice(Integer ticketPrice) {
         this.ticketPrice = ticketPrice;
     }
 

@@ -1,4 +1,4 @@
-package lab1;
+package lab1.model;
 
 import java.util.List;
 import java.util.Objects;
@@ -8,7 +8,7 @@ public class Wagon {
     private List<Ticket> tickets;
     private Integer numberFree;
 
-    public Wagon(String title,List<Ticket> tickets,Integer numberFree){
+    public Wagon(String title, List<Ticket> ticket, Integer numberFree){
         this.title=title;
         this.tickets=tickets;
         this.numberFree=numberFree;
@@ -26,7 +26,7 @@ public class Wagon {
         return tickets;
     }
 
-    public void setTickets(List<Ticket> tickets) {
+    public void setTickets(List<Ticket> wagons) {
         this.tickets = tickets;
     }
 
