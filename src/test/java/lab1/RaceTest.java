@@ -13,7 +13,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+
 public class RaceTest {
+
 
     private Route route1;
     private Route route2;
@@ -33,6 +35,7 @@ public class RaceTest {
     private Race race2;
 
     {
+
         route1 = new Route("Чернівці", "Львів");
         route2 = new Route("Львів", "Київ");
 
