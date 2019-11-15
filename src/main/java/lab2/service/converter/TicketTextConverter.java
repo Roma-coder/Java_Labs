@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class TicketTextConverter implements Converter<Ticket> {
 
-
     private final String FIELDS_SEPARATOR = "##";
     private final Integer FIELDS_COUNT = 2;
 

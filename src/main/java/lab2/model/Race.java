@@ -19,8 +19,8 @@ public class Race implements Serializable {
     private List<Wagon> wagons;
     private Integer numberTrain;
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    @JsonDeserialize(using = LocalTimeDeserializer.class)
+ //   @JsonSerialize(using = ToStringSerializer.class)
+//    @JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime startTime;
 
     @JsonSerialize(using = ToStringSerializer.class)
