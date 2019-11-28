@@ -92,6 +92,8 @@ public class TestXmlConverter {
         Assert.assertEquals(actual, expected);
     }
 
+
+
     @Test
     public void deserializeStringTest() throws ConvertException {
         String xmlString = "<Race><departurePoint>Station 1</departurePoint><wagons><wagons><title>Вагон 1</title><numberFree>100</numberFree><tickets><tickets><date>2019-10-20</date><ticketPrice>100</ticketPrice></tickets><tickets><date>2019-11-22</date><ticketPrice>120</ticketPrice></tickets></tickets></wagons><wagons><title>Вагон 2</title><numberFree>20</numberFree><tickets><tickets><date>2019-10-20</date><ticketPrice>100</ticketPrice></tickets><tickets><date>2019-11-22</date><ticketPrice>120</ticketPrice></tickets></tickets></wagons></wagons><numberTrain>2</numberTrain><startTime>16:30</startTime><finishTime>17:30</finishTime><route><from>Чернівці</from><to>Львів</to></route><periodicity>Friday</periodicity></Race>";

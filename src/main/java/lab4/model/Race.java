@@ -1,33 +1,55 @@
-package lab2.model;
+package lab4.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+import lab4.service.UniqueWagonsTitles;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @JsonDeserialize(builder = Race.Builder.class)
 public class Race implements Serializable {
+    @NotNull(message = "cannot be null")
+    @NotEmpty(message = "cannot be empty")
     private String departurePoint;
+
+    @NotNull(message = "cannot be null")
+    @UniqueWagonsTitles(message = "cannot contain wagons with the same titles")
     private List<Wagon> wagons;
+
+    @NotNull(message = "cannot be null")
     private Integer numberTrain;
 
     @JsonSerialize(using = ToStringSerializer.class)
     @JsonDeserialize(using = LocalTimeDeserializer.class)
+    @NotNull(message = "cannot be null")
     private LocalTime startTime;
 
     @JsonSerialize(using = ToStringSerializer.class)
     @JsonDeserialize(using = LocalTimeDeserializer.class)
+    @NotNull(message = "cannot be null")
     private LocalTime finishTime;
 
+    @NotNull(message = "cannot be null")
     private Route route;
-    private Periodicity periodicity;
 
+    @NotNull(message = "cannot be null")
+    private Periodicity periodicity;
 
 
     public enum Periodicity {
@@ -68,8 +90,22 @@ public class Race implements Serializable {
         this.departurePoint = departurePoint;
     }
 
-    public void setWagons(List<Wagon> wagons) {
-        this.wagons = wagons;
+    public boolean addWagon(Wagon wagon){
+        List<String> titles = wagons.stream()
+                .map(Wagon::getTitle)
+                .collect(Collectors.toList());
+
+        if (titles.contains(wagon.getTitle()))
+            return false;
+
+        return wagons.add(wagon);
+    }
+
+    public boolean removeWagon(Wagon wagon) {
+        if (!wagons.contains(wagon))
+            return false;
+
+        return wagons.remove(wagon);
     }
 
     public void setNumberTrain(Integer numberTrain) {
@@ -90,6 +126,24 @@ public class Race implements Serializable {
 
     public void setPeriodicity(Periodicity periodicity) {
         this.periodicity = periodicity;
+    }
+
+    public void validate() throws IllegalStateException {
+        Validator validator = Validation.byDefaultProvider()
+                .configure()
+                .messageInterpolator(new ParameterMessageInterpolator())
+                .buildValidatorFactory()
+                .getValidator();
+
+        Set<ConstraintViolation<Race>> constraintViolations = validator.validate(this);
+
+        if (constraintViolations.size() > 0) {
+            Set<String> exceptionDetails = new HashSet<>();
+            for (ConstraintViolation<Race> violation : constraintViolations) {
+                exceptionDetails.add(violation.getPropertyPath().toString() + " " + violation.getMessage());
+            }
+            throw new IllegalStateException(exceptionDetails.toString());
+        }
     }
 
     @Override
@@ -129,15 +183,11 @@ public class Race implements Serializable {
 
         public Builder() {
             race = new Race();
+            race.wagons = new ArrayList<>();
         }
 
         public Builder setDeparturePoint(String departurePoint) {
             race.departurePoint = departurePoint;
-            return this;
-        }
-
-        public Builder setWagons(List<Wagon> wagons) {
-            race.wagons = wagons;
             return this;
         }
 

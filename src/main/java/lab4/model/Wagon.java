@@ -1,16 +1,34 @@
-package lab3.model;
+package lab4.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class Wagon implements Serializable {
-    @NotNull
+    @NotNull(message = "cannot be null")
+    @NotEmpty(message = "cannot be empty")
     private String title;
+
+    @NotNull(message = "cannot be null")
+    @NotEmpty(message = "cannot be empty")
     private List<Ticket> tickets;
+
+    @NotNull(message = "cannot be null")
+    @Min(value = 0, message = "cannot be less then 0")
+    @Max(value = 20, message = "cannot be more than 20")
     private Integer numberFree;
 
     @JsonCreator
@@ -42,6 +60,24 @@ public class Wagon implements Serializable {
 
     public void setNumberFree(Integer numberFree) {
         this.numberFree = numberFree;
+    }
+
+    public void validate() throws IllegalStateException {
+        Validator validator = Validation.byDefaultProvider()
+                .configure()
+                .messageInterpolator(new ParameterMessageInterpolator())
+                .buildValidatorFactory()
+                .getValidator();
+
+        Set<ConstraintViolation<Wagon>> constraintViolations = validator.validate(this);
+
+        if (constraintViolations.size() > 0) {
+            Set<String> exceptionDetails = new HashSet<>();
+            for (ConstraintViolation<Wagon> violation : constraintViolations) {
+                exceptionDetails.add(violation.getPropertyPath().toString() + " " + violation.getMessage());
+            }
+            throw new IllegalStateException(exceptionDetails.toString());
+        }
     }
 
     @Override

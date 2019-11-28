@@ -8,7 +8,9 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
 
 import java.io.Serializable;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @JsonDeserialize(builder = Race.Builder.class)
@@ -17,8 +19,8 @@ public class Race implements Serializable {
     private List<Wagon> wagons;
     private Integer numberTrain;
 
-    //   @JsonSerialize(using = ToStringSerializer.class)
-//    @JsonDeserialize(using = LocalTimeDeserializer.class)
+    //@JsonSerialize(using = ToStringSerializer.class)
+    //@JsonDeserialize(using = LocalTimeDeserializer.class)
     private LocalTime startTime;
 
     @JsonSerialize(using = ToStringSerializer.class)
@@ -68,8 +70,22 @@ public class Race implements Serializable {
         this.departurePoint = departurePoint;
     }
 
-    public void setWagons(List<Wagon> wagons) {
-        this.wagons = wagons;
+    public boolean addWagon(Wagon wagon){
+        List<String> titles = wagons.stream()
+                .map(Wagon::getTitle)
+                .collect(Collectors.toList());
+
+        if (titles.contains(wagon.getTitle()))
+            return false;
+
+        return wagons.add(wagon);
+    }
+
+    public boolean removeWagon(Wagon wagon) {
+        if (!wagons.contains(wagon))
+            return false;
+
+        return wagons.remove(wagon);
     }
 
     public void setNumberTrain(Integer numberTrain) {
@@ -129,15 +145,11 @@ public class Race implements Serializable {
 
         public Builder() {
             race = new Race();
+            race.wagons = new ArrayList<>();
         }
 
         public Builder setDeparturePoint(String departurePoint) {
             race.departurePoint = departurePoint;
-            return this;
-        }
-
-        public Builder setWagons(List<Wagon> wagons) {
-            race.wagons = wagons;
             return this;
         }
 

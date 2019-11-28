@@ -108,7 +108,7 @@ public class TestJsonConverter {
 
     @Test
     public void serializeToStringTest() throws ConvertException {
-        String expected = "{\"departurePoint\":\"Station 1\",\"wagons\":[{\"title\":\"Вагон 1\",\"tickets\":[{\"date\":\"2019-10-20\",\"ticketPrice\":100},{\"date\":\"2019-11-22\",\"ticketPrice\":120}],\"numberFree\":100},{\"title\":\"Вагон 2\",\"tickets\":[{\"date\":\"2019-10-20\",\"ticketPrice\":100},{\"date\":\"2019-11-22\",\"ticketPrice\":120}],\"numberFree\":20}],\"numberTrain\":1,\"startTime\":\"15:30\",\"finishTime\":\"16:30\",\"route\":{\"from\":\"Чернівці\",\"to\":\"Львів\"},\"periodicity\":\"Regular\"}";
+        String expected = "{\"departurePoint\":\"Station 1\",\"wagons\":[{\"title\":\"Вагон 1\",\"numberFree\":100,\"tickets\":[{\"date\":\"2019-10-20\",\"ticketPrice\":100},{\"date\":\"2019-11-22\",\"ticketPrice\":120}]},{\"title\":\"Вагон 2\",\"numberFree\":20,\"tickets\":[{\"date\":\"2019-10-20\",\"ticketPrice\":100},{\"date\":\"2019-11-22\",\"ticketPrice\":120}]}],\"numberTrain\":1,\"startTime\":\"15:30\",\"finishTime\":\"16:30\",\"route\":{\"from\":\"Чернівці\",\"to\":\"Львів\"},\"periodicity\":\"Regular\"}";
         String actual = RaceJsonConverter.serializeToString(race);
         Assert.assertEquals(actual, expected);
     }
@@ -122,7 +122,7 @@ public class TestJsonConverter {
 
     @Test(expectedExceptions = ConvertException.class)
     public void negativeDeserializeStringTest() throws ConvertException {
-        String jsonString = "{\"departurePoint\":\"Station 1\",\"wagons\":[{\"title\":\"Вагон 1\",\"tickets\":[{\"date\":\"2019-10-20\",\"ticketPrice\":100},{\"date\":\"2019-11-22\",\"ticketPrice\":120}],\"numberFree\":100},{\"title\":\"Вагон 2\",\"tickets\":[{\"date\":\"2019-10-20\",\"ticketPrice\":100},{\"date\":\"2019-11-22\",\"ticketPrice\":120}],\"numberFree\":20}],\"numberTrain\":1,\"startTime\":\"15:30\",\"finishTime\":\"16:30\",\"route\":{\"from\":\"Чернівці\",\"to\":\"Львів\"},\"periodicity\":\"Regular\"}";
+        String jsonString = "{\"departurePoint\":\"Station 1\"wagons\":[{\"title\":\"Вагон 1\",\"tickets\":[{\"date\":\"2019-10-20\",\"ticketPrice\":100},{\"date\":\"2019-11-22\",\"ticketPrice\":120}],\"numberFree\":100},{\"title\":\"Вагон 2\",\"tickets\":[{\"date\":\"2019-10-20\",\"ticketPrice\":100},{\"date\":\"2019-11-22\",\"ticketPrice\":120}],\"numberFree\":20}],\"numberTrain\":1,\"startTime\":\"15:30\",\"finishTime\":\"16:30\",\"route\":{\"from\":\"Чернівці\",\"to\":\"Львів\"},\"periodicity\":\"Regular\"}";
         RaceJsonConverter.deserializeString(jsonString);
     }
 
