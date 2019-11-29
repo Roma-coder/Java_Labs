@@ -51,16 +51,14 @@ public class Wagon implements Serializable {
 
         Wagon wagon = (Wagon) o;
 
-        if (!Objects.equals(title, wagon.title)) return false;
-        if (!Objects.equals(tickets, wagon.tickets)) return false;
-        return Objects.equals(numberFree, wagon.numberFree);
+        return  Objects.equals(title, wagon.title);
+
     }
 
     @Override
     public int hashCode() {
         int result = title != null ? title.hashCode() : 0;
-        result = 31 * result + (tickets != null ? tickets.hashCode() : 0);
-        result = 31 * result + (numberFree != null ? numberFree.hashCode() : 0);
+
         return result;
     }
 }
