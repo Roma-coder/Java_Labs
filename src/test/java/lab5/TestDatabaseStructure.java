@@ -12,6 +12,8 @@ public class TestDatabaseStructure {
         DatabaseStructure.createTables();
     }
 
+
+
     @Test
     public void testDropTables() throws SQLException {
         try { DatabaseStructure.createTables(); } catch (Exception ignored) { }

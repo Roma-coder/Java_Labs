@@ -12,7 +12,7 @@ public class DatabaseStructure {
     private static String DROP_ROUTE = "DROP TABLE route";
 
     private static String CREATE_TICKET = "CREATE TABLE ticket(t_id SERIAL NOT NULL PRIMARY KEY," +
-            "t_title VARCHAR(20) NOT NULL," +
+            "t_date DATE NOT NULL," +
             "w_id INT NOT NULL REFERENCES wagon(w_id)," +
             "t_price INT NOT NULL)";
     private static String DROP_TICKET = "DROP TABLE ticket";

@@ -1,4 +1,4 @@
-package lab4.model;
+package lab6.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,9 +14,6 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Route {
-
-
-
 
 
     private Long id;
@@ -35,8 +32,6 @@ public class Route {
         this.to = to;
     }
 
-
-
     public String getFrom() {
         return from;
     }
@@ -46,6 +41,7 @@ public class Route {
     }
 
     public Long getId() { return id; }
+
     public void setId(Long id) { this.id = id; }
 
     public void validate() throws IllegalStateException {
