@@ -1,6 +1,7 @@
 package lab6.dao;
 
 import lab6.DaoException;
+import lab6.model.Ticket;
 import lab6.model.Wagon;
 import lab5.ConnectionManager;
 
@@ -8,9 +9,7 @@ import lab5.ConnectionManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class WagonDao implements Dao<Wagon>{
     private static final String GET_BY_ID = "SELECT * FROM wagon WHERE w_id=?";
@@ -18,6 +17,7 @@ public class WagonDao implements Dao<Wagon>{
     private static final String INSERT_WAGONS = "INSERT INTO wagon(w_id, w_title, race_id, w_numberfree) VALUES(?,?,?,?)";
     private static final String UPDATE_WAGONS = "UPDATE wagon SET w_title=?, race_id=?, w_numberfree=? WHERE w_id=?";
     private static final String DELETE_WAGONS = "DELETE FROM wagon WHERE w_id=?";
+    private static final String GET_TICKETS_CHEAPER_THAN_PRICE = "SELECT t_id, t_date, t_price FROM ticket WHERE w_id = ? AND t_price <= ?";
 
     private Connection getConnection() throws DaoException {
         try{
@@ -106,5 +106,23 @@ public class WagonDao implements Dao<Wagon>{
         } catch (Exception e) {
             throw new DaoException(e.getMessage());
         }
+    }
+
+    public Set<Ticket> getTicketsCheaperThanPrice(Wagon wagon, Integer price) throws DaoException {
+        Set<Ticket> result = new HashSet<>();
+        try {
+            PreparedStatement preparedStatement = getConnection().prepareStatement(GET_TICKETS_CHEAPER_THAN_PRICE);
+            preparedStatement.setLong(1, wagon.getId());
+            preparedStatement.setInt(2, price);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Ticket ticket = new Ticket(rs.getDate("t_date").toLocalDate(), rs.getInt("t_price"));
+                ticket.setId(rs.getLong("t_id"));
+                result.add(ticket);
+            }
+        } catch (Exception e) {
+            throw new DaoException(e.getMessage());
+        }
+        return result;
     }
 }
