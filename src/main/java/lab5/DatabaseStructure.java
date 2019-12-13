@@ -13,13 +13,13 @@ public class DatabaseStructure {
 
     private static String CREATE_TICKET = "CREATE TABLE ticket(t_id SERIAL NOT NULL PRIMARY KEY," +
             "t_date DATE NOT NULL," +
-            "w_id INT NOT NULL REFERENCES wagon(w_id) ON DELETE CASCADE," +
+            "w_id INT REFERENCES wagon(w_id) ON DELETE CASCADE," +
             "t_price INT NOT NULL)";
     private static String DROP_TICKET = "DROP TABLE ticket";
 
     private static String CREATE_WAGON = "CREATE TABLE wagon(w_id SERIAL NOT NULL PRIMARY KEY," +
             "w_title VARCHAR(20) NOT NULL," +
-            "race_id INT NOT NULL REFERENCES race(race_id) ON DELETE CASCADE," +
+            "race_id INT REFERENCES race(race_id) ON DELETE CASCADE," +
             "w_numberfree INT NOT NULL)";
     private static String DROP_WAGON = "DROP TABLE wagon";
 

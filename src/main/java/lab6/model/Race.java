@@ -63,6 +63,49 @@ public class Race implements Serializable {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Race race = (Race) o;
+
+        if (id != null ? !id.equals(race.id) : race.id != null) return false;
+        if (departurePoint != null ? !departurePoint.equals(race.departurePoint) : race.departurePoint != null)
+            return false;
+        if (wagons != null ? !wagons.equals(race.wagons) : race.wagons != null) return false;
+        if (numberTrain != null ? !numberTrain.equals(race.numberTrain) : race.numberTrain != null) return false;
+        if (startTime != null ? !startTime.equals(race.startTime) : race.startTime != null) return false;
+        if (finishTime != null ? !finishTime.equals(race.finishTime) : race.finishTime != null) return false;
+        return periodicity == race.periodicity;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (departurePoint != null ? departurePoint.hashCode() : 0);
+        result = 31 * result + (wagons != null ? wagons.hashCode() : 0);
+        result = 31 * result + (numberTrain != null ? numberTrain.hashCode() : 0);
+        result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
+        result = 31 * result + (finishTime != null ? finishTime.hashCode() : 0);
+        result = 31 * result + (periodicity != null ? periodicity.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Race{" +
+                "id=" + id +
+                ", departurePoint='" + departurePoint + '\'' +
+                ", wagons=" + wagons +
+                ", numberTrain=" + numberTrain +
+                ", startTime=" + startTime +
+                ", finishTime=" + finishTime +
+                ", route=" + route +
+                ", periodicity=" + periodicity +
+                '}';
+    }
+
     public String getDeparturePoint() {
         return departurePoint;
     }
@@ -151,35 +194,6 @@ public class Race implements Serializable {
             }
             throw new IllegalStateException(exceptionDetails.toString());
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Race race = (Race) o;
-
-        if (departurePoint != null ? !departurePoint.equals(race.departurePoint) : race.departurePoint != null)
-            return false;
-        if (wagons != null ? !wagons.equals(race.wagons) : race.wagons != null) return false;
-        if (numberTrain != null ? !numberTrain.equals(race.numberTrain) : race.numberTrain != null) return false;
-        if (startTime != null ? !startTime.equals(race.startTime) : race.startTime != null) return false;
-        if (finishTime != null ? !finishTime.equals(race.finishTime) : race.finishTime != null) return false;
-        if (route != null ? !route.equals(race.route) : race.route != null) return false;
-        return periodicity == race.periodicity;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = departurePoint != null ? departurePoint.hashCode() : 0;
-        result = 31 * result + (wagons != null ? wagons.hashCode() : 0);
-        result = 31 * result + (numberTrain != null ? numberTrain.hashCode() : 0);
-        result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
-        result = 31 * result + (finishTime != null ? finishTime.hashCode() : 0);
-        result = 31 * result + (route != null ? route.hashCode() : 0);
-        result = 31 * result + (periodicity != null ? periodicity.hashCode() : 0);
-        return result;
     }
 
     @JsonPOJOBuilder(withPrefix = "set")

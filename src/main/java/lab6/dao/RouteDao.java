@@ -15,7 +15,7 @@ import java.util.*;
 public class RouteDao implements Dao<Route> {
     private static final String GET_BY_ID = "SELECT * FROM route WHERE r_id=?";
     private static final String GET_ALL_ROUTES = "SELECT * FROM route";
-    private static final String INSERT_ROUTES = "INSERT INTO route(r_id, r_from, r_to) VALUES(?,?,?)";
+    private static final String INSERT_ROUTES = "INSERT INTO route(r_from, r_to) VALUES(?,?)";
     private static final String UPDATE_ROUTES = "UPDATE route SET r_from=?, r_to=? WHERE r_id=?";
     private static final String DELETE_ROUTES = "DELETE FROM route WHERE r_id=?";
     private static final String FIND_RACES_OF_ROUTE = "SELECT race_id, race_departurePoint, race_number, race_start, race_finish, race_periodicity, r_id, r_from, r_to FROM route WHERE r_from = ? AND r_to = ? JOIN race ON race_route_id = r_id";
@@ -70,9 +70,8 @@ public class RouteDao implements Dao<Route> {
         try {
             Long idResult = null;
             PreparedStatement preparedStatement = getConnection().prepareStatement(INSERT_ROUTES, new String[]{"r_id"});
-            preparedStatement.setLong(1, route.getId());
-            preparedStatement.setString(2, route.getFrom());
-            preparedStatement.setString(3, route.getTo());
+            preparedStatement.setString(1, route.getFrom());
+            preparedStatement.setString(2, route.getTo());
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()) {

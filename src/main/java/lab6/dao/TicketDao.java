@@ -15,8 +15,8 @@ import java.util.Optional;
 public class TicketDao implements Dao<Ticket>{
     private static final String GET_BY_ID = "SELECT * FROM ticket WHERE t_id=?";
     private static final String GET_ALL_TICKETS = "SELECT * FROM ticket";
-    private static final String INSERT_TICKETS = "INSERT INTO ticket(t_id, t_date, w_id, t_price) VALUES(?,?,?,?)";
-    private static final String UPDATE_TICKETS = "UPDATE ticket SET t_date=?, w_id=?, t_price=? WHERE t_id=?";
+    private static final String INSERT_TICKETS = "INSERT INTO ticket(t_date, t_price) VALUES(?,?)";
+    private static final String UPDATE_TICKETS = "UPDATE ticket SET t_date=?, t_price=? WHERE t_id=?";
     private static final String DELETE_TICKETS = "DELETE FROM ticket WHERE t_id=?";
 
     private Connection getConnection() throws DaoException {
@@ -68,9 +68,8 @@ public class TicketDao implements Dao<Ticket>{
         try {
             Long idResult = null;
             PreparedStatement preparedStatement = getConnection().prepareStatement(INSERT_TICKETS, new String[]{"t_id"});
-            preparedStatement.setLong(1, ticket.getId());
-            preparedStatement.setDate(2, Date.valueOf(ticket.getDate()));
-            preparedStatement.setInt(3, ticket.getTicketPrice());
+            preparedStatement.setDate(1, Date.valueOf(ticket.getDate()));
+            preparedStatement.setInt(2, ticket.getTicketPrice());
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()) {
@@ -88,7 +87,7 @@ public class TicketDao implements Dao<Ticket>{
     public void update(Ticket ticket) throws DaoException {
         try {
             PreparedStatement preparedStatement = getConnection().prepareStatement(UPDATE_TICKETS);
-            preparedStatement.setDate(2, Date.valueOf(ticket.getDate()));
+            preparedStatement.setDate(1, Date.valueOf(ticket.getDate()));
             preparedStatement.setInt(2, ticket.getTicketPrice());
             preparedStatement.setLong(3, ticket.getId());
             preparedStatement.executeUpdate();

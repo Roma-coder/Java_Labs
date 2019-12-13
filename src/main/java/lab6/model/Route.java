@@ -40,6 +40,14 @@ public class Route {
         return to;
     }
 
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }

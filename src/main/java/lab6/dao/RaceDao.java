@@ -18,7 +18,7 @@ import java.util.*;
 public class RaceDao implements Dao<Race> {
     private static final String GET_BY_ID = "SELECT * FROM race WHERE race_id=?";
     private static final String GET_ALL_RACES = "SELECT * FROM race";
-    private static final String INSERT_RACES = "INSERT INTO race(race_id, race_departurepoint, race_number, race_start, race_finish, race_route_id, race_periodicity) VALUES(?,?,?,?,?,?,?)";
+    private static final String INSERT_RACES = "INSERT INTO race(race_departurepoint, race_number, race_start, race_finish, race_route_id, race_periodicity) VALUES(?,?,?,?,?,?)";
     private static final String UPDATE_RACES = "UPDATE race SET race_departurepoint=?, race_number=?, race_start=?, race_finish=?, race_route_id=?, race_periodicity=? WHERE race_id=?";
     private static final String DELETE_RACES = "DELETE FROM race WHERE race_id=?";
     private static final String SORT_WAGONS_BY_NUMBERFREE = "SELECT w_id, w_title, w_numberfree FROM wagon WHERE race_id = ? ORDER BY w_numberfree";
@@ -88,12 +88,13 @@ public class RaceDao implements Dao<Race> {
         try {
             Long idResult = null;
             PreparedStatement preparedStatement = getConnection().prepareStatement(INSERT_RACES, new String[]{"race_id"});
-            preparedStatement.setLong(1, race.getId());
-            preparedStatement.setString(2, race.getDeparturePoint());
-            preparedStatement.setInt(3, race.getNumberTrain());
-            preparedStatement.setString(4, race.getStartTime().toString());
-            preparedStatement.setString(5, race.getFinishTime().toString());
+            preparedStatement.setString(1, race.getDeparturePoint());
+            preparedStatement.setInt(2, race.getNumberTrain());
+            preparedStatement.setString(3, race.getStartTime().toString());
+            preparedStatement.setString(4, race.getFinishTime().toString());
+            preparedStatement.setLong(5, race.getRoute().getId());
             preparedStatement.setString(6, race.getPeriodicity().toString());
+
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()) {
@@ -103,7 +104,7 @@ public class RaceDao implements Dao<Race> {
 
             return idResult;
         } catch (Exception e) {
-            throw new DaoException(e.getMessage());
+            throw new DaoException(e.toString());
         }
     }
 
@@ -115,8 +116,9 @@ public class RaceDao implements Dao<Race> {
             preparedStatement.setInt(2, race.getNumberTrain());
             preparedStatement.setString(3, race.getStartTime().toString());
             preparedStatement.setString(4, race.getFinishTime().toString());
-            preparedStatement.setString(5, race.getPeriodicity().toString());
-            preparedStatement.setLong(6, race.getId());
+            preparedStatement.setLong(5, race.getRoute().getId());
+            preparedStatement.setString(6, race.getPeriodicity().toString());
+            preparedStatement.setLong(7, race.getId());
 
             preparedStatement.executeUpdate();
         } catch (Exception e) {
